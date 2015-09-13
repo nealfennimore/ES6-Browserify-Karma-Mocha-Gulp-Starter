@@ -14,6 +14,16 @@ module.exports = function (gulp, $, paths){
         return _.keys(packageManifest.dependencies) || [];
     }
 
+    function getBrowser() {
+        var packageManifest = {};
+        try {
+            packageManifest = require(paths.npm + 'package.json');
+        } catch (e) {
+            console.error(e);
+        }
+        return packageManifest.browser || {};
+    }
+
     function getBower() {
         var bowerManifest = {};
         try {
@@ -22,16 +32,6 @@ module.exports = function (gulp, $, paths){
             console.error(e);
         }
         return _.keys(bowerManifest.dependencies) || [];
-    }
-
-    function getBrowser() {
-        var bowerManifest = {};
-        try {
-            bowerManifest = require(paths.bower + 'bower.json');
-        } catch (e) {
-            console.error(e);
-        }
-        return _.keys(bowerManifest.browser) || [];
     }
 
     return {
