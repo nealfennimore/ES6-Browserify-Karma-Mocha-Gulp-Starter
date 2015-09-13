@@ -1,21 +1,20 @@
 'use strict';
 
-var gulp         = require('gulp'),
-    config       = require('../config'),
-    notifier     = require('../utils/notifier'),
-    browserSync  = require('browser-sync'),
-    plumber      = require('gulp-plumber'),
-    sass         = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer');
+var autoprefixer = require('autoprefixer'),
+    browserSync  = require('browser-sync');
 
-gulp.task('styles', function() {
-    gulp.src([config.src.styles + '**/*.scss'])
-        .pipe(plumber(notifier.error()))
-        .pipe(sass())
-        .pipe(autoprefixer('last 2 versions'))
-        .pipe(gulp.dest(config.dist.styles))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
-        .pipe(notifier.success('Styles done.'));
-});
+module.exports = function (gulp, $, paths, u) {
+    return function(){
+        gulp.src([paths.styles.src + '**/*.scss'])
+            .pipe( $.plumber(u.notifier.error()) )
+            .pipe( $.sass() )
+            .pipe(
+                $.postcss([ autoprefixer({ browsers: ['last 2 versions'] }) ])
+            )
+            .pipe(gulp.dest(paths.styles.dist))
+            .pipe(browserSync.reload({
+                stream: true
+            }))
+            .pipe(u.notifier.success('Styles done.'));
+    }
+};

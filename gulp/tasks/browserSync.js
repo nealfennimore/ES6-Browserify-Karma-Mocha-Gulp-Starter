@@ -1,13 +1,13 @@
 'use strict';
 
-var gulp        = require('gulp'),
-    config      = require('../config'),
-    browserSync = require('browser-sync');
+var browserSync = require('browser-sync');
 
-gulp.task('browserSync', function() {
-    browserSync({
-        server: {
-            baseDir: config.dist.path
-        }
-    });
-});
+module.exports = function (gulp, $, paths) {
+    return function () {
+        browserSync({
+            server: {
+                baseDir: paths.dist
+            }
+        });
+    }
+}
