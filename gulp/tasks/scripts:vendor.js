@@ -6,14 +6,14 @@ var browserify   = require('browserify'),
 
 module.exports = function (gulp, $, paths, u){
     return function() {
-        var bundler = browserify();
+        var bundler  = browserify(),
+            packages = u.packages.browser();
 
-        u.packages.bower().forEach(function(id) {
-            var resolvedPath = bowerResolve.fastReadSync(id);
-            bundler.require(resolvedPath, {
-                expose: id
-            });
-        });
+        for (var lib in packages) {
+            if (packages.hasOwnProperty(lib)) {
+                bundler.require(lib);
+            }
+        }
 
         bundler.bundle()
             .on('error', $.util.log.bind($.util, 'Browserify Error'))
